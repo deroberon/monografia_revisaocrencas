@@ -1,0 +1,297 @@
+%%% $Id: article.tex,v 1.3 2000/07/27 03:52:17 jessen Exp $
+\documentclass[a4paper,12pt]{article}
+%\documentstyle[amssymb]{article}
+%%% caracteres acentuados em ISO-8859-1
+\usepackage[latin1]{inputenc}
+
+%%% Uso de Font Encoding T1
+\usepackage[T1]{fontenc}
+
+%%% Suporte para gerar o documento em Português e Inglês
+\usepackage[english,brazil]{babel}
+
+%%% Índice Remissivo
+\usepackage{makeidx}
+
+%%% Para inclusão de gráficos
+\usepackage[dvips]{graphicx}
+
+%%% indenta primeiro paráfrafo, estilo brasileiro.
+\usepackage{indentfirst}
+
+%%% dimensões do documento
+%\usepackage[dvips]{geometry}
+%\geometry{a4paper,left=1in,right=1in,top=1in,bottom=1in}
+
+\title{Palestra Reasoning About Rational Agents}
+\author{André Gustavo Andrade}
+
+\date{\today\\
+  }
+
+%%% Para a criação de Índice
+\makeindex
+
+%%%% preamble ends here
+\begin{document}
+\maketitle
+\clearpage
+{\Large
+
+{\LARGE \bf Versão 1 do loop de controle do agente.}
+
+\begin{verbatim}
+B=B0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   I=delibera(B)
+   pi=planeja(B,I)
+   executa(pi)
+end while
+\end{verbatim}
+
+}
+
+
+\clearpage
+{\Large
+
+{\LARGE \bf Versão 2 do loop de controle do agente.}
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   executa(pi)
+end while
+\end{verbatim}
+
+Agente agora gera opções e escolhe entre elas.
+}
+
+\clearpage
+{\Large
+
+{\LARGE \bf Estratégias de Commitment}
+
+\begin{description}
+\item [Blind commitment:] Agente mantém suas intenções até acreditar que ela foi alcançada. Também é conhecido como {\it fanatical commitment}
+\item [Single-minded commitment:] Agente mantém sua intenção até acreditar que ou sua intenção foi alcançada, ou que não é mais possível alcança-la.
+\item [Open-minded commitment:] Agente mantém sua intenção até acreditar que ela possa ser alcançada.
+\end{description}
+
+}
+
+\clearpage
+{\Large
+
+{\LARGE \bf Versão 3 do loop de controle do agente.}
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not vazio(pi) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Agente reativo: quando um plano aparenta ter falhado, planeja novamente.
+}
+
+\clearpage
+{\Large
+
+{\LARGE \bf Versão 4 do loop de controle do agente.}
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not (vazio(pi) 
+              ou sucedido(I,B)
+              ou impossivel(I,B)) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Agente é capaz de verificar intenções já alcançadas ou impossíveis.
+
+}
+
+\clearpage
+{\Large
+
+{\LARGE \bf Versão 5 do loop de controle do agente.}
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not (vazio(pi) 
+              ou sucedido(I,B)
+              ou impossivel(I,B)) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      D=opções(B,I)
+      I=filtra(B,D,I)
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Agente mais cuidadoso: reconsidera as intenções antes de executar uma ação.
+
+}
+
+\clearpage
+{\Large
+
+{\LARGE \bf Versão 6 do loop de controle do agente.}
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not (vazio(pi) 
+              ou sucedido(I,B)
+              ou impossivel(I,B)) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      if reconsidera(I,B) then
+         D=opções(B,I)
+         I=filtra(B,D,I)
+      end if
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+}
+
+\clearpage
+{\Large
+{\LARGE \bf Componentes da lógica LORA}
+\begin{itemize}
+\item Lógica de Primeira Ordem
+\item Believe-Desire-Intention (BDI)
+\item Temporal
+\item Ações
+\end{itemize}
+}
+
+\clearpage
+{\Large
+{\LARGE \bf BDI - Believe, Desire, Intention}
+\begin{description}
+\item[Bel $i$ $\alpha$:] Agente $i$ acredita $\alpha$
+\item[Des $i$ $\alpha$:] Agente $i$ deseja $\alpha$
+\item[Int $i$ $\alpha$:] Agente $i$ intenciona $\alpha$
+\end{description}
+Algumas características:
+\begin{itemize}
+\item Permite quantificadores sobre os agentes
+\item {\bf NÃO} permite quantificadores sobre as fórmulas
+\end{itemize}
+}
+
+\clearpage
+{\Large
+{\LARGE \bf Temporal}
+\begin{description}
+\item[$\circ \alpha$:] $\alpha$ é verdade no próximo instante
+\item[$\Diamond \alpha$:] $\alpha$ será verdadeiro em algum momento no futuro
+\item[$\Box \alpha$:] $\alpha$ sempre é verdade
+\item[$\alpha$ U $\beta$:] $\alpha$ é verdadeiro até que $\beta$ seja verdadeiro
+\item[$\alpha$ W $\beta$:] $\alpha$ é verdadeiro a menos que $\beta$ seja verdadeiro
+\end{description}
+Quantificadores sobre caminhos
+\begin{description}
+\item[A$\alpha$:] $\alpha$ é verdadeiro em todos os caminhos
+\item[E$\alpha$:] $\alpha$ é verdadeiro em algum caminho
+\end{description}
+}
+
+\clearpage
+{\Large
+{\LARGE \bf Ações}
+\begin{description}
+\item[Happens $\sigma$:] A ação $\sigma$ acontece no próximo instante
+\item[Achvs $\sigma$ $\alpha$:] Ocorre a ação $\sigma$ atingindo $\alpha$
+\item[Agts $\sigma$ $g$:] Um grupo de agentes $g$ é requerido para fazer a ação $\sigma$
+\end{description}
+Construtores para ações
+\begin{description}
+\item[$\sigma ; \sigma '$:] $\sigma$ seguido por $\sigma '$
+\item[$\sigma | \sigma '$:] $\sigma$ ou $\sigma '$
+\item[$\sigma *$:] $\sigma$ repetido mais de uma vez
+\item[$\alpha ?$:] $\alpha$ é satisfeito?
+\end{description}
+}
+
+\clearpage
+{\Large
+{\LARGE \bf Bibliografia}
+\\
+Reasoning About Rational Agents de Michael Wooldridge
+
+Cap. 2 e 3
+}
+\end{document}
+
+%%% article.tex ends here.
+
+
+
+

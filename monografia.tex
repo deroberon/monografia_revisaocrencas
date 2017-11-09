@@ -1,0 +1,561 @@
+%%% $Id: article.tex,v 1.3 2000/07/27 03:52:17 jessen Exp $
+\documentclass[a4paper,11pt]{article}
+
+%%% caracteres acentuados em ISO-8859-1
+\usepackage[latin1]{inputenc}
+
+%%% Uso de Font Encoding T1
+\usepackage[T1]{fontenc}
+
+%%% Suporte para gerar o documento em Português e Inglês
+\usepackage[english,brazil]{babel}
+
+%%% Índice Remissivo
+\usepackage{makeidx}
+
+%%% Para inclusão de gráficos
+\usepackage[dvips]{graphicx}
+
+%%% indenta primeiro paráfrafo, estilo brasileiro.
+\usepackage{indentfirst}
+
+\usepackage{amsfonts}
+%%% dimensões do documento
+%\usepackage[dvips]{geometry}
+%\geometry{a4paper,left=1in,right=1in,top=1in,bottom=1in}
+
+\title{Monografia de Revisão de Crenças - Modelo BDI}
+
+\author{André Gustavo Andrade (Oberon)}
+
+\date{27/07/2000\\
+  Versão 0.1}
+
+%%% Para a criação de Índice
+\makeindex
+
+\newcommand{\Next}{\bigcirc}
+\newcommand{\Aways}{\Box}
+\newcommand{\STime}{\Diamond}
+
+%%%% preamble ends here
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+%%% quebra de página opcional
+\clearpage
+\section{Introdução}
+Por alguns segundos eu fiquei parado na frente do computador pensando em como e o que escrever na introdução. Eu sabia que deveria fazer um comentário geral sobre o curso, mas não tinha a menor idéia de por onde começar e muito menos se deveria dar expressão às idéias que passavam por minha cabeça. Tentei reiteradamente colocá-las de lado mas elas retornavam com renovado vigor e soube neste instante que não se calariam enquanto não encontrassem seu reflexo nesta tela em branco. 
+
+Começo por dizer, como se necessário fosse, que esta foi realmente uma matéria bastante complicada. Não somente do ponto de vista técnico, mas do ponto de vista de implicações em termos práticos. Para a maioria das pessoas, ciência e crença não se misturam. Esta disciplina é o limiar, o umbral. E como todo umbral guarda surpresas.
+
+Costumava brincar com um amigo meu que as aulas de revisão de crenças eram bastante peculiares: normalmente eu não entendia nada, e quando entendia saia com um conflito existencial.
+
+Não é segredo minha fascinação por ocultismo, e o que não pôde sair de minha cabeça foi a relação dessa ciência com os mitos de Satan e Prometeu. Prometeu, por amor a humanidade, rouba o fogo de Zeus e o entrega ao homem, permitindo a este elevar-se de um animal como outro qualquer a um ser superior. Pelo desenvolvimento da ciência, representada pelo fogo, o homem vê aplacada sua fome de conhecimento da mesma forma que o fogo aplacara sua fome  mediante o cozimento dos alimentos. Por outro lado, Satan por ódio a Deus e à sua criatura especial, o homem, leva-o a comer do fruto da árvore proibida, o conhecimento do bem e do mal, do discernimento, da ciência. Por causa de sua transgressão o homem é expulso do paraíso, perdendo sua natureza divina, encarnando em uma natureza animalesca e material (como a própria ciência) e sendo condenado a possuir um ventre incessantemente faminto (inclusive,de conhecimento).
+
+Vale a pena ressaltar que estou utilizando-me mais do poema {\it O paraíso Perdido} de John Milton na minha concepção de Satan do que da tradição católica (alias, vale lembrar que Milton nasce em 1608 e morre em 1674 com 66 anos....) e que tanto Satan quanto Prometeu sofreram graves punições por seus atos. A Satan, Deus reserva oInferno por domínio e morada, o sofrimento eterno num lago de fogo e enxofre. Prometeu é acorrentado e condenado a ter seu fígado devorado diariamente sendo regenerado à noite.
+
+Mais que mitos, isto representa pra mim dois grandes modelos de cientistas: os que se regozijam com suas descobertas e sentem-se elevados por elas e aqueles que são atormentados e consumidos por uma dor.
+
+Desde Freud (que alias, não fosse tão sexual, poderia fazer bom uso da LORA que descreveremos\footnote{Logic Of Rational Agents} se existisse em sua época. Quem sabe Lacan seria mais adequado... vai saber) sabemos que amor e ódio andam sempre juntos e são grandes forças motrizes desse universo.
+
+Nesta disciplina acho que senti um pouco essa dicotomia. Era amor por parte da compreensão, do quanto ela ampliava meus horizontes e ódio do quanto eu não podia parar pra pensar muito sobre ela sem um certo {\it estranhamento}. Esta palavra, não usada por acaso e sim no sentido semiótico, denota uma forma de interesse, algo fora do comum, do normal das disciplinas do IME.
+
+\section{Agentes Racionais e Modelo BDI}
+
+\subsection{Modelo BDI}
+O modelo BDI é uma forma interessante para pensar sobre agentes racionais. Isto porque é um modelo que combina três componentes bastante fortes:
+
+\begin{description}
+\item [Fundamentação filosófica:] pois foi desenvolvido com base numa teoria respeitada sobre ações em seres humanos, desenvolvida pelo filósofo Michael Bratman\footnote{Mas mesmo tendo essa base em ações de seres humanos, o modelo BDI, por exemplo, não admite desejos contraditórios, coisa muito frequente nos seres humanos}
+\item[Arquitetura de software:] embora em nenhum momento alguma implementação seja sugerida, surgiram implementações diferentes, mostrando sua aplicabilidade na prática inclusive em problemas do mundo real.
+\item [Uma formalização lógica:] que abrange toda uma família de lógicas capazes de modelar aspectos do modelo BDI como um conjunto de axiomas. \footnote{Esse conjunto de lógicas, da qual trataremos de apeas uma (bem geral) pode ser notada através dos axiomas intermodais. Dependendo da relação de pertinência entre os conjuntos B,D e I, vários axiomas diferentes podem ser gerados}  
+\end{description}
+
+A primeira coisa a se fazer ao falar em modelo BDI é perguntar: onde eu usarei isso?
+
+Bem, existem vários usos conhecidos. Desde os mais práticos, como utilizá-lo em implementações computacionais, até os mais teóricos como por exemplo, utilizá-lo para entender alguns comportamentos mais behavioristas no ser humano (mesmo o modelo BDI sendo restrito demais para modelar o comportamento humano). Entretando, o uso mais conhecido é no projeto e implementação de agentes racionais,o que já foi citado. Mas o que são agentes racionais?
+
+Agentes racionais são agentes com as seguintes características principais:
+\begin{description}
+\item [Autonomia:] São capazes de tomar suas próprias decisões.
+\item [Serem pró-ativos:] São capazes de exibir um comportamento orientado a metas
+\item [Reatividade:] São capazes de reagir a mudanças no ambiente
+\item [Possuirem habilidades sociais:] Capacidade de interagir com outros agentes.
+\end{description}
+
+Normalmente este último quesito é um pouco relaxado devido à complexidade de sua implementação prática.  
+
+\subsection{Alguns exemplos de agentes racionais}
+Veremos agora alguns exemplos de agenets racionais. No decorrer destes exemplos, serão explicadas algumas funções utilizadas no código, bem como alguns exemplos para elucidar o comportamento dos agentes.
+
+O primeiro agente é um dos mais simples possíveis:
+\begin{verbatim}
+B=B0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   I=delibera(B)
+   pi=planeja(B,I)
+   executa(pi)
+end while
+\end{verbatim}
+
+Ou seja, ele possui um conjunto $B0$ de crenças iniciais, e a partir daí passa a receber estímulos do ambiente, revisar suas crenças baseado na informação oriunda destes estímulos, deliberar a partir das crenças que possui, planejar como obter sua intenção e executar, finalmente, o plano.
+
+Vale lembrar que em nenhum momento o modelo BDI denota {\it como} as crenças devem ser revisadas, de forma que podemos implementá-la de várias maneira diferentes, como vimos em aula.
+
+A função {\it delibera} gera um conjunto de intenções que será usado pelo agente para a criação de um plano.
+
+A função {\it executa} simplesmente pega o plano gerado e executa-o do começo ao fim. 
+
+Por exemplo, digamos uqe nosso agente acredite:
+\begin{enumerate}
+\item Eu tenho mãe
+\item Eu não tenho dinheiro
+\item Ter dinheiro e mãe é bom
+\item Eu gosto da minha mãe
+\item Ter mãe é bom
+\item Sem mãe, dinheiro não é bom.
+\item Trabalho gera dinheiro
+\end{enumerate}  
+
+O agenet começa sua execução, e percebe: {\it uma mulher à sua frente com uma sacola de dinheiro}. Revisa suas crenças, inclui a de que a mulher tem dinheiro.
+
+Ter dinheiro pra ele é bom, então ele gera como intenção {\it ter dinheiro, trabalhar}. Cria um plano para ter dinheiro: {\it ir até a mulher, matar a mulher, pegar o dinheiro, trabalhar}.
+
+Executa o plano, e agora, com um cadaver aos seus pés, é um agente rico e trabalhador.
+
+Passemos agora para um segundo modelo de agente:
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   executa(pi)
+end while
+\end{verbatim}
+
+Este agente agora gera um conjunto de opções antes de se comprometer com algumas delas. O agente anterior era impulsivo: tudo o que ele queria, ele queria cegamente e fanaticamente. Este agente seleciona um pouco mais suas opções.
+
+A função {\it opções} gera um conjunto de opções possíveis de coisas que o agenet gostaria, enquanto {\it filtra} seleciona aquelas mais adequadas para tornarem-se de fato intenções.
+
+Utilizando o mesmo exemplo anterior, o resultado de opções poderia ser: {\it ter dinheiro, trabalhar}. Agora, {\it filtra} poderia escolher apenas {\it trabalhar}, tornando nosso agente um homem honesto e trabalhador. Poderia escolher {\it ter dinheiro} tornando-o um assassino não trabalhador ou ainda ter o mesmo comportamento do agente anterior.
+
+Daí nota-se um aumento no grau de {\it liberdade} de nosso agente baseado nos critérios da função {\it filtra}.
+
+Passemos agora para um terceiro modelo de agente:
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not vazio(pi) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Muito parecido com o anterior, à exceção de que esse agente agora executa uma ação por vez, pegando percepçõesdo ambiente durante a execução do plano, tornando-o um agente mais reativo.
+
+A função {\it soa\_possivel} é responsável por consultar as crenças do agente e decidir se baseado em sas crenças, ele ainda pode alcançar as intenções I com o plano pi.
+
+Imaginemos que este agente pense como o primeiro, e selecione I como o conjunto {\it ter dinheiro, trabalhar}. E que tendo visto a mulher com a sacola de dinheiro, planeje  {\it ir até a mulher, matar a mulher, pegar o dinheiro, trabalhar}. Ele toma a primeira ação e executa. Pega a percepção do ambiente, constatando que {\it a mulher é sua mãe}. Vai revisar suas crenças com isso. Agora, seu plano não soa mais possível, porque se ele matar a própria mãe, ter dinheiro não será mais bom. Então ele é obrigado a replanejar, e será um agente trabalhador.
+
+O curioso, é que os agentes anteriores eram matricidas e só iriam saber disso no futuro. Como se tivessem um lapso de consciencia e não vissem nada durante a prática de um ato premeditado, como ocorre de fato em alguns disturbios mentais humanos (crises de ausência).   
+
+Passemos agora para um quarto tipo de agente:
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not (vazio(pi) ou 
+              sucedido(I,B) ou 
+              impossivel(I,B)) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Este agente é um pouco menos empertigado que os anteriores. Quando ele atinge suas intenções ou quando tem certeza da impossibilidade de executá-las, ele simplesmente desiste.
+
+Por exemplo, suponha que retirássemos a crença 7 no nosso exemplo. O agente planejaria matar a mulher. Constatando ser esta sua mãe, não o faria. Constatando que não existe outra forma de ter dinheiro, ao invés de ficar eternamente tentando obter algum dinheiro ele simplesmente desiste e se contenta em ser um agente pobre.
+
+Existem alguns graus possíveis de comprometimento doas agentes em relação às suas intenções, a saber:
+
+\begin{description}
+\item [Blind commitment:] Agente mantém suas intenções até acreditar que ela foi alcançada. Também é conhecido como fanatical commitment
+\item [Single-minded commitment:] Agente mantém sua intenção até acreditar que ou sua intenção foi alcançada, ou que não é mais possível alcançá-la.
+\item [Open-minded commitment:] Agente mantém sua intenção até acreditar que ela não possa ser alcançada.
+\end{description}
+
+Passaremos agora ao próximo exemplo de agente:
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not (vazio(pi) 
+              ou sucedido(I,B)
+              ou impossivel(I,B)) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      D=opções(B,I)
+      I=filtra(B,D,I)
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Sendo este quase igual ao anterior, mas ele é capaz de reconsiderar as intenções antes de executar o resto do plano. Podendo inclusive mudá-las. 
+
+Em nosso exemplo, considere que o agente ao pegar a segunda percepção do ambiente esta seja {\it um guru dizendo que dinheiro não traz felicidade. Somente amor traz felicidade}. 
+
+Nosso agente agora reconsidera, revisa suas crenças, muda sua intenção para: {\it ter amor} e como {\it matar a mulher, pegar dinheiro, trabalhar} não parece mais condizente com suas crenças, replaneja.
+
+E por fim, vamos ao último modelo de agente:
+
+\begin{verbatim}
+B=B0
+I=I0
+while true do
+   pega percepção p
+   B=revisa(B,p)
+   D=opções(B,I)
+   I=filtra(B,D,I)
+   pi=planeja(B,I)
+   while not (vazio(pi) 
+              ou sucedido(I,B)
+              ou impossivel(I,B)) do
+      alpha=cabeça(pi)
+      executa(alpha)
+      pi=cauda(pi)
+      pega percepção p
+      B=revisa(B,p)
+      if reconsidera(I,B) then
+         D=opções(B,I)
+         I=filtra(B,D,I)
+      end if
+      if not soa_possivel(pi,I,B) then
+         pi=planeja(B,I)
+      end if
+   end while
+end while
+\end{verbatim}
+
+Este é muito parecido com o anterior, mas ele só muda de inteção quando existe algum motivo para isso.
+
+Tomemos, em nosso exemplo, o mesmo exemplo do agente anterior. Digamos que para ele, palavras de gurus não sejam tão fortes... Neste caso, ao se perguntar se ele deve reconsiderar suas intenções, ele decide não fazê-lo. 
+
+Ele também decide não matar a mãe, mas resolve trabalhar, e não conseguir amor. \\
+
+Como pudemos ver, existem diversas maneiras possíveis de se modelar um agente racional, com as mais diversas implicações na resolução dos problemas a que se destinam. 
+
+Mas para que tudo isso seja possível (implementável), é necessário uma fundamentação lógica bastante sólida para lidar com desejos, crenças e intenções. 
+
+\section{Lógica LORA}
+
+A lógica LORA(Logic Of Rational Agents) é basicamente composta por quatro componentes principais:
+
+\begin{itemize}
+\item Componente de Primeira Ordem
+\item Componente BDI
+\item Componente Temporal
+\item Componente de Ações
+\end{itemize}
+
+Descreverei cada uma delas, exceto o componente de primeira ordem por tratar-se simplesmente da lógica de primeira ordem convencional, pré requisito para o curso de revisão de crenças.
+
+\subsection{Componente BDI}
+
+Esta parte da lógica serve para descrever as crenças, desejos e intenções dos agentes, sendo formada por três operadores modais:
+
+\begin{itemize}
+\item Bel i $\alpha$ : Agente i acredita $\alpha$ 
+\item Des i $\alpha$ : Agente i deseja $\alpha$
+\item Int i $\alpha$ : Agente i intenciona $\alpha$
+\end{itemize}
+
+Estes três operadores constituem o coração da lógica LORA. Com eles podemos descrever várias proposições diferentes, exemplo:\\
+
+Bel andre ProfessoraMaisLegal(renata)\footnote{Qualquer semelhança nos nomes é mera coincidência}\\
+
+Ou ainda, proposições um pouco mais complexas:\\
+
+Bel andre Bel renata Int renata EnsinarBem
+
+Bel renata $\forall x$ Bel $x$ TeraNotaBoa($x$)\\
+
+Note que podemos utilizar os quantificadores da lógica de primeira ordem mesmo em meio aos predicados modais. Entretanto, nunca podemos quantificar sobre as fórmulas da lógica, por exemplo:\\
+
+Eu acredito em tudo: $\forall x$ Bel eu $x$\\
+
+Este tipo de construção embora faça sentido para nós, não pertence ao conjunto de fórmulas válidas na lógica LORA.
+
+\subsection{Componente Temporal}
+
+Esta parte é muito similar ao que vimos em sala de aula na parte de lógica temporal, com o acréscimo do operador $W$.
+
+\begin{itemize}
+\item $\Next \alpha$ : $\alpha$ é verdade no próximo instante
+\item $\STime \alpha$ : $\alpha$ será verdadeiro em algum momento no futuro
+\item $\Aways \alpha$ : $\alpha$ sempre é verdade
+\item $\alpha U \beta$ : $\alpha$ é verdadeiro até que $\beta$ seja verdadeiro
+\item $\alpha W \beta$ : $\alpha$ é verdadeiro a menos que $\beta$ seja verdadeiro
+\end{itemize}
+
+Exemplos:\\
+
+$\Next$ gargalhar(renata)
+
+$\forall x \Aways \STime$ morrerá($x$)
+
+$\forall x \STime \Aways$ morto($x$)
+
+$\exists i$ Bel $i$ $\STime \forall x$ JulgamentoFinal($x$)\\
+
+Podemos também nos utilizarmos de quantificadores temporais, ou seja, afirmar que sempre algo é verdade, independente do caminho que se tome no futuro, ou afirmar que algo pode ser verdade em algum caminho, no futuro
+
+\begin{itemize}
+\item $A\alpha$ : $\alpha$ é verdadeiro em todos os caminhos
+\item $E\alpha$ : $\alpha$ é verdadeiro em algum caminho
+\end{itemize}
+
+Por exemplo: \\
+
+$A\STime \forall x$ morrera($x$)
+
+$E\Next$ TomarAgua(eu)\\
+ 
+
+\subsection{Componente de Ações}
+
+Agora passaremos aos operadores que descrevem as ações possíveis de serem descritas através da LORA. 
+
+\begin{itemize}
+\item Happens $\theta$ : A ação $\theta$ acontece no próximo instante
+\item Achvs $\theta$ $\alpha$ : Ocorre a ação $\theta$ atingindo $\alpha$
+\item Agts $\theta$ g : Um grupo de agentes g é requerido para fazer a ação $\theta$
+\end{itemize}
+
+Aqui, $\theta$ sempre refere-se a uma ação e $\alpha$, como sempre, a uma sentença válida da lógica.
+
+Entretanto, em nenhum momento fica claro como podem ser construídas essas ações, e desta forma, precisamos antes de mais nada especificar os operadores de construção de ações.
+
+\begin{itemize}
+\item $\theta;\theta '$ :$\theta$ seguido por $\theta'$
+\item $\theta|\theta '$ : $\theta$ ou $\theta '$
+\item $\theta *$ : $\theta$ repetido zero oumais vezes
+\item $\alpha ?$ : $\alpha$ é satisfeito?
+\end{itemize}
+
+Quanto a quantificadore, é possível quantificar sobre sequências de ações, mas não sobre sobre uma expressão arbitrária.
+
+Desta forma, passamos a alguns exemplos envolvendo ações:\\
+
+(Happens$(\alpha ?;\theta)|(\neg \alpha ?; \theta ')$)\\
+
+$[(\alpha ?; \theta)|(\neg \alpha ?)]*$\\
+
+Este componentes em seu conjunto constituem a sintaxe da LORA. Esta lógica possui uma semântica bastante interessante que eu ainda estou tentando estudar, portanto não constará desse trabalho.
+
+\section{Tentativa de Aplicação}
+Quando terminei de estudar o que haveria de falar em meu seminário fiquei pensando um pouco sobre o quão interessante e o que não daria pra fazer (ligando um pouco com a disciplina) com essa lógica.
+
+Primeiramente pensei em descrever algumas coisas mas achei que ficaria bastante desmotivador. Então, resolvi ser um pouco menos formal, pular algumas partes (porque não daria tempo de ler tudo até o que eu queria) e extender um pouco a lógica para abarcar o que eu queria fazer.
+
+Obviamente, a probabilidade de que eu tenha cometido erros aqui por desconhecimento de causa é {\bf grande}, entretanto valia a pena correr o risco (já que não fazia parte do trabalho mesmo) em função da diversão.\footnote{Porque como disse uma sábia professora no meu primeiro ano de graduação aqui no IME: -- O divertido é brincar}
+
+Pensei que seria interessante reproduzir parte de um diálogo onde pudessemos utilizar um pouco da lógica LORA e ao mesmo tempo, denotar onde nossos agentes teriam de revisar suas crenças.
+
+Primeiramente passei a procurar pelo livro como dois agentes poderiam dialogar, e achei a seguinte definição (que eu simplifiquei para tornar o trabalho um pouco mais simples):
+
+\begin{description}
+\item[Request(S,H,$\alpha$) :]
+\begin{description}
+	\item[CanDo: ](S Believe(H CanDo $\alpha$) e (S Believe(H Believe(H CanDo $\alpha$))))
+	\item[Effect: ](H Believe(S Believe(S Want $\alpha$)))
+\end{description}
+
+\item[Inform(S,H,$\alpha$) :]
+\begin{description}
+	\item[CanDo: ](S Believe $\alpha$)
+	\item[Effect: ](H Believe(S Believe $\alpha$))
+\end{description}
+\end{description}
+
+Estas definições me ajudariam a estabelecer um diálogo para troca de informações apenas. Mas já seria divertido. Agora, qualquer diálogo para ser modelado desta forma poderia ficar um tanto grande. Mas ao mesmo tempo, diálogos curtos não propciariam demonstrações interessantes de onde ocorreriam revisões de crenças por parte de nosss agentes racionais. Será?
+
+Seria verdade se não houvesse existido uma pérola da literatura chamada {\it Alice no país das Maravilha} e sua maravilhosa lagarta incompreensiva e presunçosa.
+
+Assim, o diálogo escolhido para ser modelado foi o seguinte:\\
+
+{\it
+--Que é você? perguntou a Lagarta
+
+Não era um começo de conversa muito animador. Alice respondeu, meio encabulada: --Eu... eu mal sei, Sir, neste exato momento... pelo menos sei quem eu era quando me levantei esta manhã, mas acho que já passei por várias mudanças desde então.
+
+--Que quer dizer com isto? Esbravejou a Lagarta. --Explique-se. 
+
+--Receio não poder me explicar, respondeu Alice, --porque não sou eu mesma, entende?
+
+--Não entendo, disse a Lagarta.
+} \\
+
+E o diálogo prossegue de maneira menos animadora ainda :)  Entretanto, este trecho é suficiente para demonstrarmos o poder desse modelo BDI um pouco extendido para diálogos.
+
+Entretanto, só para facilitar, definirei uma função {\bf explicar($\alpha$)$\to \beta$}, onde $\alpha$ e $\beta$ são formulas LORA válidas.  
+
+Desta forma, começaremos a codificar o diálogo, utilizando L para a Lagarta e A para Alice.
+
+\subsection{Codificação}
+{\bf Quem é você?}\\
+
+{\sc Request(L,A,Inform(A,L,explicar(aliceé)))}\\
+
+\begin{description}
+\item[Pré-Condições:] {\sc Believe L CanDo A Inform(A,L,explicar(aliceé)) e Believe L Believe A CanDo A Inform(A,L,explicar(aliceé))}
+\item[Efeitos:] {\sc Believe A Believe L Want L Inform(A,L,explicar(aliceé))}
+\end{description}
+
+Temos que: {\sc Believe L CanDo A Inform(A,L,explicar(aliceé)}
+
+Ou seja, faz parte do conjunto de crenças da Lagarta, que Alice possa explicar-se.\\
+
+{\bf Eu mal sei, Sir, neste exato momento... pelo menos sei quem eu era quando me levantei esta manhã, mas acho que já passei por várias mudanças desde então.}\\
+
+{\sc Inform(A,L,$\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))}\\
+
+\begin{description}
+\item[Pré-Condições:]{\sc Believe A $\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera))}
+\item[Efeitos:] {\sc Believe L Believe A $\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera))}
+\end{description}
+
+Aqui, a Lagarta temde fazer sua primeira revisão de crenças. Ela tinha {\sc Believe L Believe A CanDo A Inform(A,L,explicar(aliceé))}  no seu conjunto de crenças, e como efeito da informação da Alice, passa a ter: {\sc Believe L Believe A $\neg$CanDo A Inform(A,L,explicar(aliceé))}\\
+
+{\bf O que quer dizer com isso? Explique-se}\\
+
+{\sc Request(L,A,Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))))}\\
+
+\begin{description}
+\item[Pré-Condições:] {\sc Believe L CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))) e Believe L Believe A CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera))))} 
+\item[Efeitos:] {\sc Believe A Believe L Want L Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera))))} 
+\end{description}
+
+Agora, temos que a Lagarta acredita que Alice possa explicar por que não pode se explicar. Veremos mais adiante que nossa Lagarta terá de fazer uma segunda revisão de crenças\\
+
+{\bf Receio não poder me explicar}\\
+
+{\sc Inform(A,L,$\neg$CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))))}\\
+
+\begin{description}
+\item[Pré-Condições:] {\sc Believe A $\neg$CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))))}
+\item[Efeitos:] {\sc Believe L Believe A $\neg$CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))))}
+\end{description}
+
+Ou seja, nossa lagarta que acreditava {\sc Believe L Believe A CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera))))} agora tem a conflitante crença de que: {\sc Believe L Believe A $\neg$CanDo A Inform(A,L,explicar($\neg$CanDo A Inform(A,L,explicar(aliceé)) e CanDo A Inform(A,L,explicar(aliceera)))))}, obrigando-a a uma nova revisão.
+
+Mas Alice prossegue:\\
+
+{\bf entende?}\\
+
+{\sc Request(A,L,Inform(L,A,entendeu))}\\
+
+\begin{description}
+\item[Pré-Condições:] {\sc Believe A CanDo L Inform(L,A,entendeu) e Believe A Believe L CanDo L Inform(L,A,entendeu)}
+\item[Efeitos:] {\sc Believe L Believe A Want A Inform(L,A,entendeu)}
+\end{description}
+
+Alice pede a confirmação do entendimento da Lagarta, ao que esta responde:\\
+
+{\bf Não entendo}\\
+
+{\sc Inform(L,A,$\neg$CanDo L Inform(L,A,entendeu)}\\
+
+\begin{description}
+\item[Pré-Condições:] {\sc Believe L $\neg$CanDo L Inform(L,A,entendeu)}
+\item[Efeitos:] {\sc Believe A Believe L $\neg$CanDo L Inform(L,A,entendeu)}
+\end{description}
+
+Nossa Alice que acreditava que a Lagarta havia entendido tudo, agora vai ter de revisar suas crenças porque sabe que a Lagarta não entendeu... Pobre Alice.
+
+\subsection{Nossa...}
+Essa foi apenas um brincadeira para mostrar o poder do BDI na descrição de diálogos. Eu não sei sequer se a semântica da lógica me permitiria fazer algumas coisas que fiz, ou mesmo se tudo foi feito com a máxima atenção (porque é fácil se perder em proposições muito longas) mas acho que consegui atingir meu intuito.
+
+Eu quis trabalhar especialmente com revisão de crenças, denotar onde ocorrem justamente porque trabalhamos muito com isso em sala de aula.
+ 
+\section{Conclusão}
+Minha conlusão \footnote{Concluir alguma coisa sobre qualquer coisa é sempre muito complicado porque tudo é mutável e portanto nada pode ser conclusivo.}, guiada pelo pouco contato que tive com o modelo BDI, é que se trata de um modelo extremamente poderoso, versátil e flexível para modelar agentes racionais. 
+
+Muitas vezes, enquanto trabalhava nesta monografia, eu comecei a notar que muitos dos meus pensamentos eram um pouco guiados desta forma, e não foi com muita surpresa que compreendi que isto ocorria por ser a fundamentação filosófica do modelo baseado em ações humanas. \footnote{Durante o período de preparação da monografia, ao menos dois amigos meus acabaram recebendo via ICQ sentenças em LORA, uma vez que era mais fácil explicitá-las assim do que descrevê-las em português. Mas todos foram unânimes em afirmar que eu deveria procurar um psicologo}
+
+Eu não adentrei a semântica da LORA, uma vez que não fazia parte do trabalho\footnote{Mas mesmo assim, teria adentrado, houvesse tempo disponível.}, mas confesso que estou tremendamente tentado a fazer isso nas férias porque embora isso tenha sido dito no artigo do Wooldridge que o modelo possui algumas implementações e usos no mundo real, eu gostaria de tomar mais contato com estas implementações para descobrir o que de fato é possível se fazer.
+
+O que também é curiosamente espantoso, é que a lógica descrita tem um conjunto relativamente pequeno de operadores mediante o poderío de experssão que possui. 
+
+São características como essas: simplicidade e aplicabilidade que fazem do modelo BDI um dos mais usados modelos para agentes racionais. Eu estudei também um pouco do modelo de Cohen e Levesque. Mas a definição de Intenção no modelo deles já é um predicado bastante grande. Em BDI isto é instantâneo.  
+
+Outra característica bastante curiosa é que em nenhum momento se especifica como os agentes tratam as intenções, podendo admitir vários tipos de comprometimentos, os conectivos intermodais também podem ser modelados como bem se entenda, de acordo com as propriedades que desejamos em nossa lógica, e que a revisão de crenças também não segue nenhum modelo pré-definido, o que nos dá total liberdade de escolhermos a que melhor se ajustar à aplicação.
+
+Estas características dão ao modelo BDI uma alta flexibilidade no tocante à construção e modelagem de agentes.
+
+Outra característica bastante importante, é que a lógica pode inclusive ser extensível, contribuindo para aumentar a escalabilidade do modelo.
+
+Essas dentre outras características me fazem acreditar na conclusão já citada: o poderío do modelo BDI para a descrição de agentes racionais.  
+
+\section{Bibliografia}
+\begin{itemize}
+\item WOOLDRIDGE, Michael. Reasoning about Rational Agents. MIT press, 2000.
+\item CARROLL, Lewis. Alice. Ed. Jorge Zahar, 2002.
+\item WOOLDRIDGE, Michael e HOEK, Wiebe van der. Towards a Logic of Rational Agency. Oxford University Press, 2003.
+\end{itemize}
+\end{document}
+
+%%% article.tex ends here.
+
+
+
+
+
